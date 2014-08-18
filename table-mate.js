@@ -43,7 +43,7 @@
 			var result = analyseTable(table, data.options.analyse);
 			data.analysis = result;
 			
-			$this.data('tablemate', data);
+			$table.data('tablemate', data);
 			
 			//Setup Resizing
 			function resizeCallback()
