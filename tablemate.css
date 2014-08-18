@@ -1,0 +1,34 @@
+table.breakPoint
+{
+	display:none;
+}
+
+div.tablemate .block
+{
+	border:1px solid #DEDEDE;
+	margin:6px 0px;
+}
+div.tablemate .block > .title
+{
+	font-size:22px;
+	font-weight:bold;
+	border-bottom:1px solid #DEDEDE;
+	padding:5px;
+	background:#ededed;
+}
+
+div.tablemate .block .column
+{
+	padding:10px 5px;
+}
+div.tablemate .block .column .title
+{
+	font-size:18px;
+	font-weight:bold;
+	padding:2px;
+	border:none;
+}
+div.tablemate .block .column .data
+{
+	padding:2px;
+}
