@@ -2,6 +2,7 @@
 {
 	$.tablemate.analysis = {
 		analyseTable: analyseTable,
+		analyseRow: analyseRow
 	};
 	
 	function analyseTable(Element, Options)

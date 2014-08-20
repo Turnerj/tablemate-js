@@ -59,7 +59,7 @@
 			
 			//TODO: Handle data when there are multiple heading columns in the table? Die horribly? Detect and don't care?
 			
-			function getTitlesForRowSpan(Rows, Start, Length)
+			function getTitlesForRowSpan(Rows, Start, Length, Table)
 			{
 				var title = '';
 				for (var i = Start, l = Start + Length; i < l; i++)
@@ -69,7 +69,9 @@
 				
 				title = title.substr(0, title.length - 2);
 				
-				title = parseTitleInput(title);
+				var parseResult = $.tablemate.parse.performParse(title, null, analysis, Start, Length);
+				if (typeof parseResult == 'string')
+					title = parseResult;
 				
 				return title;
 			}

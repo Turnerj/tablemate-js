@@ -55,11 +55,6 @@
 		});
 	}
 	
-	
-	
-	
-	
-	
 	function handleResize(Element, Data, SkipBreakCheck)
 	{
 		var $this = $(Element);
@@ -123,12 +118,6 @@
 		
 		$this.data('tablemate', Data);
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	$(function()
