@@ -39,6 +39,11 @@
 			
 			$table.data('tablemate', data);
 			
+			if ($.tablemate.tests)
+			{
+				$.tablemate.tests.setup.call(this, data);
+			}
+			
 			//Setup Resizing
 			function resizeCallback()
 			{
