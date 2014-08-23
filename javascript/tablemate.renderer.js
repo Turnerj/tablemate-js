@@ -13,18 +13,28 @@
 		$mate.addClass('tablemate');
 		
 		//Utilities
-		function parseTitleInput(Input, Table)
+		function getTitlesForRowSpan(Rows, Start, Length)
 		{
-			//TODO: Clean this up! Several puppies could pass away with this function :(
-			
-			for (var parser in $.tablemate.parsers)
+			var titles = [];
+			for (var i = Start, l = Start + Length; i < l; i++)
 			{
-				var result = $.tablemate.parsers[parser].call(Table, Input);
-				if (typeof result == 'string')
-					return result;
+				titles.push(analysis.rows[i].columns[0].title);
 			}
 			
-			return Input;
+			var title = null;
+			
+			var parseResult = $.tablemate.parse.performParse(titles, null);
+			if (typeof parseResult == 'string')
+			{
+				title = parseResult;
+			}
+			else
+			{
+				//I know this doesn't have spaces between the commas but this will likely be changed later
+				title = titles.toString();
+			}
+			
+			return title;
 		}
 		
 		
@@ -45,7 +55,7 @@
 				var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
 				
 				$column.find('.title').text(rowData.columns[0].title);
-				$column.find('.data').text(rowData.columns[1].data);
+				$column.find('.data').html(rowData.columns[1].data);
 				
 				$block.append($column);
 			}
@@ -59,29 +69,7 @@
 			
 			//TODO: Handle data when there are multiple heading columns in the table? Die horribly? Detect and don't care?
 			
-			function getTitlesForRowSpan(Rows, Start, Length, Table)
-			{
-				var titles = [];
-				for (var i = Start, l = Start + Length; i < l; i++)
-				{
-					titles.push(analysis.rows[i].columns[0].title);
-				}
-				
-				var title = null;
-				
-				var parseResult = $.tablemate.parse.performParse(titles, null, analysis, Start, Length);
-				if (typeof parseResult == 'string')
-				{
-					title = parseResult;
-				}
-				else
-				{
-					//I know this doesn't have spaces between the commas but this will likely be changed later
-					title = titles.toString();
-				}
-				
-				return title;
-			}
+			
 			
 			var firstRow = analysis.rows[0];
 			for (var i = 1, l = firstRow.columns.length; i < l; i++)
