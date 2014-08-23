@@ -61,17 +61,24 @@
 			
 			function getTitlesForRowSpan(Rows, Start, Length, Table)
 			{
-				var title = '';
+				var titles = [];
 				for (var i = Start, l = Start + Length; i < l; i++)
 				{
-					title += analysis.rows[i].columns[0].title + ', ';
+					titles.push(analysis.rows[i].columns[0].title);
 				}
 				
-				title = title.substr(0, title.length - 2);
+				var title = null;
 				
-				var parseResult = $.tablemate.parse.performParse(title, null, analysis, Start, Length);
+				var parseResult = $.tablemate.parse.performParse(titles, null, analysis, Start, Length);
 				if (typeof parseResult == 'string')
+				{
 					title = parseResult;
+				}
+				else
+				{
+					//I know this doesn't have spaces between the commas but this will likely be changed later
+					title = titles.toString();
+				}
 				
 				return title;
 			}

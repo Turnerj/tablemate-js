@@ -1,19 +1,19 @@
 (function($)
 {
 	$.tablemate.parse = {
-		evaluateText: function(Text)
+		evaluateData: function(Data)
 		{
 			var result = {
 				canParse: false,
 				parsers: [],
-				text: Text
+				data: Data
 			}
 			
 			for (var parser in this.parsers)
 			{
 				if (typeof this.parsers[parser].check == 'function')
 				{
-					var parserResult = this.parsers[parser].check.call(null, Text);
+					var parserResult = this.parsers[parser].check.call(null, Data);
 					if (parserResult === true)
 						result.parsers.push(parser);
 				}
@@ -23,16 +23,16 @@
 			
 			return result;
 		},
-		performParse: function(EvalResultOrText, SpecificParser, Analysis, Row, NumberOfRows)
+		performParse: function(EvalResultOrData, SpecificParser)
 		{
 			var result = null;
-			if (typeof EvalResultOrText == 'string')
+			if (typeof EvalResultOrData == 'object' && EvalResultOrData.length > 0)
 			{
-				result = this.evaluateText(EvalResultOrText);
+				result = this.evaluateData(EvalResultOrData);
 			}
 			else
 			{
-				result = EvalResultOrText;
+				result = EvalResultOrData;
 			}
 			
 			if (!result.canParse)
@@ -54,7 +54,7 @@
 			
 			if (typeof this.parsers[parser] == 'object')
 			{
-				return this.parsers[parser].parse.call(Analysis, result.text, Row, NumberOfRows);
+				return this.parsers[parser].parse.call(Analysis, result.text);
 			}
 			
 			return false;
@@ -65,7 +65,7 @@
 				{
 					
 				},
-				parse: function(Input, Row, NumberOfRows)
+				parse: function(Input)
 				{
 					
 				}

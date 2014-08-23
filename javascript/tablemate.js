@@ -14,9 +14,9 @@
 			breakPoint: {
 				activeClass: 'breakPoint',
 				breakTimeout: 100,
-				resizeTimeout: 100,
 				width: 480
-			}
+			},
+			resizeTimeout: 100
 		}
 	};
 	
@@ -49,7 +49,7 @@
 			$(window).on('resize', function()
 			{
 				clearTimeout(breakTimeout);
-				breakTimeout = setTimeout(resizeCallback, data.options.breakPoint.resizeTimeout);
+				breakTimeout = setTimeout(resizeCallback, data.options.resizeTimeout);
 			});
 			resizeCallback();
 		});
@@ -63,19 +63,19 @@
 		var parentWidth = $this.parent().width();
 		var forceBreak = false;
 		
-		if (!Data.isBreakPointActive)
+		if (Data.options.allowResponsiveTableWidth && !Data.analysis.isInitialWidthPercentage)
 		{
-			if (Data.options.allowResponsiveTableWidth && !Data.analysis.isInitialWidthPercentage)
+			if (!Data.inResponsiveMode)
 			{
 				if (parentWidth <= Data.analysis.initialWidth)
 				{
-					if (!Data.inResponsiveMode)
-					{
-						$this.css('width', '100%');
-						Data.inResponsiveMode = true;
-					}
+					$this.css('width', '100%');
+					Data.inResponsiveMode = true;
 				}
-				else if (Data.inResponsiveMode)
+			}
+			else if (Data.inResponsiveMode)
+			{
+				if (parentWidth > Data.analysis.initialWidth)
 				{
 					$this.css('width', Data.analysis.initialWidth + 'px');
 					Data.inResponsiveMode = false;

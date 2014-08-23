@@ -32,9 +32,6 @@
 		//Get all child rows, regardless of thead/tbody/tfoot and without getting any tables inside tables
 		var $rows = $($table.get(0).rows);
 		
-		//Utilities
-		
-		
 		//Loop Data
 		$rows.each(function(RowIndex)
 		{
