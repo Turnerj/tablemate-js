@@ -163,10 +163,14 @@
 		$rows.each(function(RowIndex)
 		{
 			//Setup cell mapping data structure
-			
 			if (RowIndex == 0)
 			{
-				columnCount = this.cells.length;
+				var tmpCount = 0;
+				$(this.cells).each(function()
+				{
+					tmpCount += this.colSpan;
+				});
+				columnCount = tmpCount;
 			}
 			
 			var $row = $(this), cells = [];
@@ -181,6 +185,7 @@
 			$cells = $(this.cells);
 			$cells.each(function(ColIndex)
 			{
+				var $cell = $(this), cellRows = [];
 				var cells = $row.data('cells'), trueIndex = 0;
 				
 				//Insert current cell into map
@@ -199,6 +204,7 @@
 				}
 				
 				$row.data('cells', cells);
+				cellRows.push($row[0]);
 				
 				//Insert current cell into map for additional rows it spans to
 				if (this.rowSpan > 1)
@@ -208,6 +214,8 @@
 						var $tmpRow = $rows.eq(i);
 						var cells = $tmpRow.data('cells');
 						
+						cellRows.push($tmpRow[0]);
+						
 						//Make the map be correct with the column span
 						for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
 						{
@@ -216,6 +224,8 @@
 						$tmpRow.data('cells', cells);
 					}
 				}
+				
+				$cell.data('rows', cellRows);
 			});
 		});
 	}
