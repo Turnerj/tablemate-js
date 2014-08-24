@@ -133,7 +133,10 @@
 					{
 						if (typeof cells[i] == 'undefined')
 						{
-							cells[i] = this;
+							for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
+							{
+								cells[i + i2] = this;
+							}
 							trueIndex = i;
 							break;
 						}
@@ -148,13 +151,14 @@
 							var $tmpRow = $rows.eq(i);
 							var cells = $tmpRow.data('cells');
 							
-							cells[trueIndex] = this;
+							for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
+							{
+								cells[trueIndex + i2] = this;
+							}
 							$tmpRow.data('cells', cells);
 						}
 					}
 				});
-				
-				console.log($row.data('cells'), 'Row ' + RowIndex);
 			});
 			
 			//Set colour
@@ -164,6 +168,9 @@
 				var $row = $(this), $cells = $($row.data('cells'));
 				$cells.each(function()
 				{
+					if (this == window)
+						return;
+					
 					var $cell = $(this);
 					
 					if (colourIndex >= colours.length)
