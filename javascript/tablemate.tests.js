@@ -8,160 +8,42 @@
 		],
 		setup: function(Data)
 		{
-			var $table = $(this);
-			if ($table.hasClass('testColumnPosition'))
-				$.tablemate.tests.testColumnPosition.call(this, Data);
-			
-			if ($table.hasClass('testColumnPosition2'))
-				$.tablemate.tests.testColumnPosition2.call(this, Data);
-			
-			if ($table.hasClass('testColumnPosition3'))
-				$.tablemate.tests.testColumnPosition3.call(this, Data);
-		},
-		testColumnPosition: function(Data)
-		{
-			var $this = $(this), $rows = $(this.rows);
-			$rows.each(function()
+			//This checks the class names of the table to see if any tests should be run
+			var classes = this.className.split(/\s+/);
+			for (var i = 0, l = classes.length; i < l; i++)
 			{
-				var colourIndex = 0, colours = $.tablemate.tests.columnColours;
-				var $row = $(this), $cells = $(this.cells);
-				$cells.each(function()
+				if (classes[i].indexOf('test') === 0)
 				{
-					var $cell = $(this);
-					
-					if (colourIndex >= colours.length)
-						colourIndex = 0;
-					
-					$cell.append('<div class="testBlock" style="background:'+colours[colourIndex]+';"></div>');
-					
-					colourIndex++;
-				});
-			});
-		},
-		testColumnPosition2: function(Data)
-		{
-			var $this = $(this), $rows = $(this.rows);
-			
-			function getAllCellsInRow(Row)
-			{
-				var $row = $(Row);
-				var allCells = $.makeArray(Row.cells);
-				var cells = $row.data('spannedCells');
-				
-				if (cells)
-				{
-					for (var i = 0, l = cells.length; i < l; i++)
-					{
-						var cell = cells[i];
-						allCells.splice(cell.index, 0, cell.element);
-					}
-				}
-				
-				return allCells;
-			}
-			
-			function setSpannedRows(RowIndex, RowSpan, ColIndex)
-			{
-				for (var i = RowIndex + 1, l = RowIndex + RowSpan; i < l; i++)
-				{
-					var $row = $rows.eq(i), data = $row.data();
-					
-					if (!data.spannedCells)
-					{
-						data.spannedCells = [];
-					}
-					
-					data.spannedCells.push({
-						index: ColIndex,
-						element: this
-					});
-					
-					$row.data(data);
+					$.tablemate.tests.runTest(classes[i].substr(4), this);
 				}
 			}
-			
-			$rows.each(function(RowIndex)
-			{
-				var colourIndex = 0, colours = $.tablemate.tests.columnColours;
-				var $row = $(this), $cells = $(getAllCellsInRow(this));
-				$cells.each(function(ColIndex)
-				{
-					var $cell = $(this);
-					
-					if (this.rowSpan > 1 && this.parentNode == $row[0])
-					{
-						setSpannedRows.call(this, RowIndex, this.rowSpan, ColIndex);
-					}
-					
-					if (colourIndex >= colours.length)
-						colourIndex = 0;
-					
-					$cell.append('<div class="testBlock" style="background:'+colours[colourIndex]+';"></div>');
-					
-					colourIndex++;
-				});
-			});
 		},
-		testColumnPosition3: function(Data)
+		runTest: function(Test, Table)
 		{
-			var $this = $(this), $rows = $(this.rows), columnCount = 0;
-			
-			//Setup cell data
-			$rows.each(function(RowIndex)
+			//Performs a single test on the table
+			var test = $.tablemate.tests['test' + Test];
+			if (typeof test == 'function')
 			{
-				if (RowIndex == 0)
-				{
-					columnCount = this.cells.length;
-				}
-				
-				var $row = $(this), cells = [];
-				cells.length = columnCount;
-				
-				//$row.data('cells', $.makeArray(this.cells));
-				$row.data('cells', cells);
-			});
+				test.call(Table);
+				return true;
+			}
+			return false;
+		},
+		
+		//===== TESTS =====
+		
+		testColumnMapping: function(Data)
+		{
+			//This is a purely visual test without any automated testing.
+			//The idea is to check that the column colours line up. The 
+			//more complex the table (multiple rowSpans and colSpans),
+			//the more useful the test.
 			
-			//Set the spanned cells
-			$rows.each(function(RowIndex)
-			{
-				var $row = $(this);
-				$cells = $(this.cells);
-				$cells.each(function(ColIndex)
-				{
-					var cells = $row.data('cells'), trueIndex = 0;
-					for (var i = 0, l = cells.length; i < l; i++)
-					{
-						if (typeof cells[i] == 'undefined')
-						{
-							for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
-							{
-								cells[i + i2] = this;
-							}
-							trueIndex = i;
-							break;
-						}
-					}
-					
-					$row.data('cells', cells);
-					
-					if (this.rowSpan > 1)
-					{
-						for (var i = RowIndex, l = RowIndex + this.rowSpan; i < l; i++)
-						{
-							var $tmpRow = $rows.eq(i);
-							var cells = $tmpRow.data('cells');
-							
-							for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
-							{
-								cells[trueIndex + i2] = this;
-							}
-							$tmpRow.data('cells', cells);
-						}
-					}
-				});
-			});
+			$.tablemate.analysis.utilities.configureCellMapping(this);
 			
-			//Set colour
+			var $table = $(this), $rows = $(this.rows);
+			
+			//Add a colour block to every mapped cell
 			$rows.each(function(RowIndex)
 			{
 				var colourIndex = 0, colours = $.tablemate.tests.columnColours;
@@ -176,7 +58,7 @@
 					if (colourIndex >= colours.length)
 						colourIndex = 0;
 					
-					$cell.append('<div class="testBlock" style="background:'+colours[colourIndex]+';"></div>');
+					$cell.append('<div class="testColumnMapping" style="background:'+colours[colourIndex]+';"></div>');
 					
 					colourIndex++;
 				});

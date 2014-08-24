@@ -2,7 +2,10 @@
 {
 	$.tablemate.analysis = {
 		analyseTable: analyseTable,
-		analyseRow: analyseRow
+		analyseRow: analyseRow,
+		utilities: {
+			configureCellMapping: configureCellMapping
+		}
 	};
 	
 	function analyseTable(Element, Options)
@@ -151,6 +154,70 @@
 		}
 		
 		return result;
+	}
+	
+	function configureCellMapping(Table)
+	{
+		var $table = $(Table), $rows = $(Table.rows), columnCount = 0;
+			
+		$rows.each(function(RowIndex)
+		{
+			//Setup cell mapping data structure
+			
+			if (RowIndex == 0)
+			{
+				columnCount = this.cells.length;
+			}
+			
+			var $row = $(this), cells = [];
+			cells.length = columnCount;
+			
+			$row.data('cells', cells);
+		}).each(function(RowIndex)
+		{
+			//Build map of cells and rows
+			
+			var $row = $(this);
+			$cells = $(this.cells);
+			$cells.each(function(ColIndex)
+			{
+				var cells = $row.data('cells'), trueIndex = 0;
+				
+				//Insert current cell into map
+				for (var i = 0, l = cells.length; i < l; i++)
+				{
+					if (typeof cells[i] == 'undefined')
+					{
+						//Make the map be correct with the column span
+						for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
+						{
+							cells[i + i2] = this;
+						}
+						trueIndex = i;
+						break;
+					}
+				}
+				
+				$row.data('cells', cells);
+				
+				//Insert current cell into map for additional rows it spans to
+				if (this.rowSpan > 1)
+				{
+					for (var i = RowIndex + 1, l = RowIndex + this.rowSpan; i < l; i++)
+					{
+						var $tmpRow = $rows.eq(i);
+						var cells = $tmpRow.data('cells');
+						
+						//Make the map be correct with the column span
+						for (var i2 = 0, l2 = this.colSpan; i2 < l2; i2++)
+						{
+							cells[trueIndex + i2] = this;
+						}
+						$tmpRow.data('cells', cells);
+					}
+				}
+			});
+		});
 	}
 	
 })(jQuery);
