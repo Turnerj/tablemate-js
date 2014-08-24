@@ -57,8 +57,12 @@
 					
 					if (colourIndex >= colours.length)
 						colourIndex = 0;
-					
-					$cell.append('<div class="testColumnMapping" style="background:'+colours[colourIndex]+';"></div>');
+						
+					var nextCount = $cell.children('.testColumnMapping').filter(function()
+					{
+						return $(this).data('index') == colourIndex;
+					}).length + 1;
+					$cell.append('<div class="testColumnMapping" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + nextCount + '</div>');
 					
 					colourIndex++;
 				});
