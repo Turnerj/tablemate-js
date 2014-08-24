@@ -62,7 +62,17 @@
 					{
 						return $(this).data('index') == colourIndex;
 					}).length + 1;
-					$cell.append('<div class="testColumnMapping" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + nextCount + '</div>');
+					
+					var $testBlock = $('<div class="testColumnMapping" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + nextCount + '</div>');
+					$testBlock.on('mouseover', function()
+					{
+						$cells.addClass('highlight');
+					}).on('mouseout', function()
+					{
+						$cells.removeClass('highlight');
+					});
+					
+					$cell.append($testBlock);
 					
 					colourIndex++;
 				});

@@ -14,6 +14,11 @@ table.breakPoint
 	text-align:center;
 	font-size:22px;
 }
+.tablemate.testColumnMapping .highlight
+{
+	background:#979797;
+}
+
 
 div.tablemate .block
 {
