@@ -67,6 +67,7 @@
 	{
 		var $row = $(Element);
 		
+		//TODO: Move all properties expect "row" and "columns" to analyser pack JS
 		var result = {
 			row: Element,
 			columns: [],
@@ -85,6 +86,7 @@
 		
 		$cells.each(function(ColIndex)
 		{
+			//TODO: Move all properties except "cell" to analyser pack JS
 			var cellData = {
 				cell: this,
 				tag: this.nodeName,
