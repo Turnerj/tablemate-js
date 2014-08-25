@@ -13,25 +13,31 @@
 		$mate.addClass('tablemate');
 		
 		//Utilities
-		function getTitlesForRowSpan(Rows, Start, Length)
+		function getTitleForCell(Rows, RowIndex, ColumnIndex)
 		{
 			var titles = [];
-			for (var i = Start, l = Start + Length; i < l; i++)
+			var rowData = Rows[RowIndex];
+			var cellData = rowData.columns[ColumnIndex];
+			
+			for (var i = RowIndex, l = RowIndex + cellData.rowspan; i < l; i++)
 			{
-				titles.push(analysis.rows[i].columns[0].title);
+				var tmpRow = analysis.rows[i];
+				if (typeof tmpRow == 'object')
+				{
+					titles.push(tmpRow.columns[0].title);
+				}
 			}
 			
 			var title = null;
-			
 			var parseResult = $.tablemate.parse.performParse(titles, null);
+			
 			if (typeof parseResult == 'string')
 			{
 				title = parseResult;
 			}
 			else
 			{
-				//I know this doesn't have spaces between the commas but this will likely be changed later
-				title = titles.toString();
+				title = titles.join(', ');
 			}
 			
 			return title;
@@ -69,8 +75,6 @@
 			
 			//TODO: Handle data when there are multiple heading columns in the table? Die horribly? Detect and don't care?
 			
-			
-			
 			var firstRow = analysis.rows[0];
 			for (var i = 1, l = firstRow.columns.length; i < l; i++)
 			{
@@ -94,18 +98,14 @@
 					hasAnyRows = true;
 					
 					var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
-					var title = rowData.columns[0].title;
-					
-					var rowspan = rowData.columns[i].rowspan;
-					if (rowspan > 1)
-					{
-						title = getTitlesForRowSpan(analysis.rows, i2, rowspan);
-					}
+					var title = getTitleForCell(analysis.rows, i2, i);
 					
 					$column.find('.title').text(title);
 					$column.find('.data').html(rowData.columns[i].data);
 					
 					$block.append($column);
+					
+					i2 = (i2 + rowData.columns[i].rowspan) - 1;
 				}
 				
 				if (hasAnyRows)

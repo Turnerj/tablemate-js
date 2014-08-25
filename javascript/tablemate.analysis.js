@@ -3,19 +3,31 @@
 	$.tablemate.analysis = {
 		analyseTable: analyseTable,
 		analyseRow: analyseRow,
+		
+		on: onEvent,
+		trigger: triggerEvent,
 		utilities: {
 			configureCellMapping: configureCellMapping
 		}
 	};
 	
-	function analyseTable(Element, Options)
+	function onEvent(Event, Func)
 	{
-		var $table = $(Element);
+		$($.tablemate.analysis).on(Event, Func);
+	}
+	function triggerEvent(Event, Data)
+	{
+		$($.tablemate.analysis).triggerHandler(Event, Data);
+	}
+	
+	function analyseTable(Table, Options)
+	{
+		configureCellMapping(Table);
+		
+		var $table = $(Table);
 		var result = {
 			rows: [],
-			numberOfColumns: 0,
-			isCrossTabulated: false,
-			isHeadingDataPair: true
+			numberOfColumns: 0
 		};
 		
 		//Analyse Table Width
@@ -31,6 +43,8 @@
 			result.isInitialWidthPercentage = false;
 		}
 		
+		triggerEvent('analyseTable.start', [ result ]);
+		
 		//Analyse Data
 		//Get all child rows, regardless of thead/tbody/tfoot and without getting any tables inside tables
 		var $rows = $($table.get(0).rows);
@@ -38,29 +52,13 @@
 		//Loop Data
 		$rows.each(function(RowIndex)
 		{
-			var $row = $(this);
 			var rowData = analyseRow(this, Options);
 			
-			if (rowData.columns.length > 1)
-			{
-				if (Options.detectCrossTabulation && RowIndex == 0 && rowData.columns[0].isEmpty && rowData.hasAnyHeadings)
-				{
-					result.isCrossTabulated = true;
-				}
-			}
-			
-			if (RowIndex == 0)
-			{
-				result.numberOfColumns = rowData.numberOfColumns;
-			}
-			
-			if (!rowData.isHeadingDataPair)
-			{
-				result.isHeadingDataPair = false;
-			}
-			
+			triggerEvent('analyseTable.afterRowAnalysis', [ result, rowData, RowIndex, Options ]);
 			result.rows.push(rowData);
 		});
+		
+		triggerEvent('analyseTable.end', [ result, $rows ]);
 		
 		return result;
 	}
@@ -70,6 +68,7 @@
 		var $row = $(Element);
 		
 		var result = {
+			row: Element,
 			columns: [],
 			numberOfColumns: 0,
 			isInsideTHead: $row.parent().get(0).nodeName == 'THEAD',
@@ -79,15 +78,16 @@
 			hasAnyData: false
 		};
 		
-		var $columns = $row.children();
-		$columns.each(function(Index)
+		var $cells = $($row.data('cells'));
+		result.numberOfColumns = $cells.length;
+		
+		triggerEvent('analyseRow.start', [ result ]);
+		
+		$cells.each(function(ColIndex)
 		{
-			var $this = $(this);
-			var colData = {
+			var cellData = {
+				cell: this,
 				tag: this.nodeName,
-				isBold: $this.css('font-weight') == '700',
-				isCentered: $this.css('text-align') == 'center',
-				isFirstChildStrong: $this.children().length > 0 && $this.children().get(0).nodeName == 'STRONG',
 				isHeading: false,
 				isEmpty: false,
 				title: null,
@@ -96,62 +96,11 @@
 				rowspan: this.rowSpan
 			};
 			
-			result.numberOfColumns += colData.colspan;
-			
-			//Detect if the row is a heading
-			if (
-				result.isInsideTHead ||
-				colData.tag == 'TH' ||
-				(colData.isBold && colData.isCentered) ||
-				colData.isFirstChildStrong
-			)
-			{
-				colData.isHeading = true;
-				result.hasAnyHeadings = true;
-				
-				colData.data = $.trim($this.text());
-				
-				var tmpTitle = $this.data('title');
-				if (!tmpTitle || !tmpTitle.length)
-				{
-					tmpTitle = colData.data;
-				}
-				
-				colData.title = tmpTitle;
-			}
-			else
-			{
-				result.isRowOfHeadings = false;
-				
-				colData.data = $this.html();
-			}
-			
-			//Empty Check
-			if ($.trim($this.text()).length == 0)
-			{
-				colData.isEmpty = true;
-			}
-			else
-			{
-				result.hasAnyData = true;
-			}
-			
-			//Allow row to still be full of headings if the first column doesn't have data
-			if (Options.detectCrossTabulation && Index == 0 && colData.isEmpty && !colData.isHeading)
-			{
-				colData.isHeading = true;
-				result.hasAnyHeadings = true;
-				result.isRowOfHeadings = false;
-			}
-			
-			result.columns.push(colData);
+			triggerEvent('analyseRow.cellAnalysis', [ result, cellData, ColIndex, Options ]);
+			result.columns.push(cellData);
 		});
 		
-		//Check if the row is a heading/data pair
-		if ($columns.length == 2 && result.columns[0].isHeading && !result.columns[1].isHeading)
-		{
-			result.isHeadingDataPair = true;
-		}
+		triggerEvent('analyseRow.end', [ result ]);
 		
 		return result;
 	}
@@ -180,7 +129,6 @@
 		}).each(function(RowIndex)
 		{
 			//Build map of cells and rows
-			
 			var $row = $(this);
 			$cells = $(this.cells);
 			$cells.each(function(ColIndex)

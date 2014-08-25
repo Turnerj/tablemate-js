@@ -108,24 +108,26 @@
 						}
 					});
 					
-					var beginTimeMatches = firstResult.match(this.timeRegex);
-					var endTimeMatches = lastResult.match(this.timeRegex);
-					
-					if (beginTimeMatches != null)
+					if (firstResult != null)
 					{
-						var beginTime = beginTimeMatches[0];
-						var endTime = endTimeMatches[endTimeMatches.length - 1];
+						var beginTimeMatches = firstResult.match(this.timeRegex);
+						var endTimeMatches = lastResult.match(this.timeRegex);
 						
-						if (beginTime == endTime)
+						if (beginTimeMatches != null)
 						{
-							return beginTime;
-						}
-						else
-						{
-							return beginTime + ' - ' + endTime;
+							var beginTime = beginTimeMatches[0];
+							var endTime = endTimeMatches[endTimeMatches.length - 1];
+							
+							if (beginTime == endTime)
+							{
+								return beginTime;
+							}
+							else
+							{
+								return beginTime + ' - ' + endTime;
+							}
 						}
 					}
-					
 					return null;
 				}
 			}
