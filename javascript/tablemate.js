@@ -13,7 +13,6 @@
 			autoBreakOnBodyOverflow: true,
 			breakPoint: {
 				activeClass: 'breakPoint',
-				breakTimeout: 100,
 				width: 480
 			},
 			resizeTimeout: 100
@@ -105,7 +104,7 @@
 			{
 				Data.breakWidth = currentWidth;
 				
-				$.tablemate.renderer.renderBreakMate($this);
+				$.tablemate.rendering.enableBreak($this);
 				$this.addClass(Data.options.breakPoint.activeClass);
 				
 				Data.isBreakPointActive = true;
@@ -115,7 +114,7 @@
 		{
 			Data.breakWidth = -1;
 			
-			$.tablemate.renderer.removeBreakMate($this);
+			$.tablemate.rendering.disableBreak($this);
 			$this.removeClass(Data.options.breakPoint.activeClass);
 			
 			Data.isBreakPointActive = false;
