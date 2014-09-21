@@ -43,22 +43,23 @@
 			result.isInitialWidthPercentage = false;
 		}
 		
-		triggerEvent('analyseTable.start', [ result ]);
+		triggerEvent('analyseTable.start', [ result, Options ]);
 		
 		//Analyse Data
 		//Get all child rows, regardless of thead/tbody/tfoot and without getting any tables inside tables
-		var $rows = $($table.get(0).rows);
+		var $rows = $(Table.rows);
 		
 		//Loop Data
 		$rows.each(function(RowIndex)
 		{
 			var rowData = analyseRow(this, Options);
+			rowData.index = RowIndex;
 			
 			triggerEvent('analyseTable.afterRowAnalysis', [ result, rowData, RowIndex, Options ]);
 			result.rows.push(rowData);
 		});
 		
-		triggerEvent('analyseTable.end', [ result, $rows ]);
+		triggerEvent('analyseTable.end', [ result, Options ]);
 		
 		return result;
 	}
@@ -67,33 +68,23 @@
 	{
 		var $row = $(Element);
 		
-		//TODO: Move all properties expect "row" and "columns" to analyser pack JS
 		var result = {
 			row: Element,
 			columns: [],
-			numberOfColumns: 0,
-			isInsideTHead: $row.parent().get(0).nodeName == 'THEAD',
-			isRowOfHeadings: true,
-			isHeadingDataPair: false,
-			hasAnyHeadings: false,
-			hasAnyData: false
+			numberOfColumns: 0
 		};
 		
 		var $cells = $($row.data('cells'));
 		result.numberOfColumns = $cells.length;
 		
-		triggerEvent('analyseRow.start', [ result ]);
+		triggerEvent('analyseRow.start', [ result, Options ]);
 		
 		$cells.each(function(ColIndex)
 		{
-			//TODO: Move all properties except "cell" to analyser pack JS
 			var cellData = {
 				cell: this,
+				index: ColIndex,
 				tag: this.nodeName,
-				isHeading: false,
-				isEmpty: false,
-				title: null,
-				data: null,
 				colspan: this.colSpan,
 				rowspan: this.rowSpan
 			};
@@ -102,7 +93,7 @@
 			result.columns.push(cellData);
 		});
 		
-		triggerEvent('analyseRow.end', [ result ]);
+		triggerEvent('analyseRow.end', [ result, Options ]);
 		
 		return result;
 	}

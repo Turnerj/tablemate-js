@@ -3,13 +3,26 @@
 	var analysis = $.tablemate.analysis;
 	
 	//Default Analyser
-	analysis.on('analyseTable.start', function(e, Result)
+	analysis.on('analyseRow.start', function(e, Result)
 	{
-		Result.isRowOfHeadings = true;
+		$.extend(Result, {
+			isInsideTHead: $(Result.row).parent().get(0).nodeName == 'THEAD',
+			isRowOfHeadings: true,
+			isHeadingDataPair: false,
+			hasAnyHeadings: false,
+			hasAnyData: false
+		});
 	});
 	analysis.on('analyseRow.cellAnalysis', function(e, RowResult, CellData, CellIndex, Options)
 	{
 		var $cell = $(CellData.cell);
+		
+		$.extend(CellData, {
+			isHeading: false,
+			isEmpty: false,
+			title: null,
+			data: null
+		});
 		
 		CellData.styling = {
 			isBold: $cell.css('font-weight') == '700',

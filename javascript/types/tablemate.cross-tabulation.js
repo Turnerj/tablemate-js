@@ -4,15 +4,18 @@
 	var analysis = $.tablemate.analysis;
 	var rendering = $.tablemate.rendering;
 	
-	analysis.on('analyseTable.start', function(e, TableResult)
+	analysis.on('analyseTable.start', function(e, TableResult, Options)
 	{
 		TableResult.isCrossTabulated = false;
 	});
-	analysis.on('analyseTable.afterRowAnalysis', function(e, TableResult, RowResult, RowIndex, Options)
+	analysis.on('analyseTable.end', function(e, TableResult, Options)
 	{
-		if (RowResult.columns.length > 1)
+		var rows = TableResult.rows;
+		var firstRow = rows[0];
+		
+		if (TableResult.numberOfColumns > 1)
 		{
-			if (Options.detectCrossTabulation && RowIndex == 0 && RowResult.columns[0].isEmpty && RowResult.hasAnyHeadings)
+			if (Options.detectCrossTabulation && firstRow.columns[0].isEmpty && firstRow.hasAnyHeadings)
 			{
 				TableResult.isCrossTabulated = true;
 			}
