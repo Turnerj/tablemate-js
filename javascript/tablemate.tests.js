@@ -38,9 +38,7 @@
 			//The idea is to check that the column colours line up. The 
 			//more complex the table (multiple rowSpans and colSpans),
 			//the more useful the test.
-			
-			$.tablemate.analysis.utilities.configureCellMapping(this);
-			
+						
 			var $table = $(this), $rows = $(this.rows);
 			
 			//Add a colour block to every mapped cell
@@ -77,6 +75,59 @@
 					colourIndex++;
 				});
 			});
+		},
+		
+		testAdvCrossTabulation: function(Data)
+		{
+			//This is a purely visual test without any automated testing.
+			//The idea is to check that the colours correspond to advanced
+			//cross-tabulation of the data
+			
+			var analysis = $(this).data('tablemate').analysis;
+			var rows = analysis.rows, startPoints = analysis.tabulationStartPoints;
+			
+			//Add a colour block representing the different cross-tabulated
+			//tables inside the main table
+			var firstRow = rows[0];
+			var secondRow = rows[1];
+			
+			$.each(firstRow.columns, function(ColumnIndex, Column)
+			{
+				var secondRowColumn = secondRow.columns[ColumnIndex];
+				
+			});
+			
+			/*rows.each(function(RowIndex, Row)
+			{
+				var colourIndex = 0, colours = $.tablemate.tests.columnColours;
+				var $row = $(this), $cells = $($row.data('cells'));
+				Row.columns.each(function(ColumnIndex, Column)
+				{
+					if (this == window)
+						return;
+					
+					var $cell = $(Column.cell);
+					
+					if (colourIndex >= colours.length)
+						colourIndex = 0;
+					
+					
+					
+					
+					var $testBlock = $('<div class="testColumnMapping" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + nextCount + '</div>');
+					$testBlock.on('mouseover', function()
+					{
+						$cells.addClass('highlight');
+					}).on('mouseout', function()
+					{
+						$cells.removeClass('highlight');
+					});
+					
+					$cell.append($testBlock);
+					
+					colourIndex++;
+				});
+			});*/
 		}
 	};
 })(jQuery);
