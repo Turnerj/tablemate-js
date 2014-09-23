@@ -42,7 +42,7 @@
 			$Table.next('div.tablemate').remove();
 		},
 		utilities: {
-			getTitleForCell: function(Rows, RowIndex, ColumnIndex)
+			getTitleForCell: function(Rows, RowIndex, ColumnIndex, TitleIndex)
 			{
 				var titles = [];
 				var rowData = Rows[RowIndex];
@@ -53,7 +53,7 @@
 					var tmpRow = Rows[i];
 					if (typeof tmpRow == 'object')
 					{
-						titles.push(tmpRow.columns[0].title);
+						titles.push(tmpRow.columns[TitleIndex || 0].title);
 					}
 				}
 				
