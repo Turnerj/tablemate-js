@@ -84,50 +84,29 @@
 			//cross-tabulation of the data
 			
 			var analysis = $(this).data('tablemate').analysis;
-			var rows = analysis.rows, startPoints = analysis.tabulationStartPoints;
+			var rows = analysis.rows, points = analysis.tabulationPoints;
 			
-			//Add a colour block representing the different cross-tabulated
-			//tables inside the main table
-			var firstRow = rows[0];
-			var secondRow = rows[1];
-			
-			$.each(firstRow.columns, function(ColumnIndex, Column)
-			{
-				var secondRowColumn = secondRow.columns[ColumnIndex];
-				
-			});
-			
-			/*rows.each(function(RowIndex, Row)
+			$.each(rows, function(RowIndex, Row)
 			{
 				var colourIndex = 0, colours = $.tablemate.tests.columnColours;
-				var $row = $(this), $cells = $($row.data('cells'));
-				Row.columns.each(function(ColumnIndex, Column)
+				var point = null, columns = null;
+				for (var i = 0, l = points.length; i < l; i++)
 				{
-					if (this == window)
-						return;
-					
-					var $cell = $(Column.cell);
-					
 					if (colourIndex >= colours.length)
 						colourIndex = 0;
 					
+					point = points[i];
+					columns = Row.columns.slice(point.start, point.end + 1);
 					
-					
-					
-					var $testBlock = $('<div class="testColumnMapping" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + nextCount + '</div>');
-					$testBlock.on('mouseover', function()
+					$.each(columns, function(ColumnIndex, Column)
 					{
-						$cells.addClass('highlight');
-					}).on('mouseout', function()
-					{
-						$cells.removeClass('highlight');
+						var $testBlock = $('<div class="testAdvCrossTabulation" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + (i + 1) + '</div>');
+						$(Column.cell).append($testBlock);
 					});
 					
-					$cell.append($testBlock);
-					
 					colourIndex++;
-				});
-			});*/
+				}
+			});
 		}
 	};
 })(jQuery);

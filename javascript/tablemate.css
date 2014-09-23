@@ -3,7 +3,8 @@ table.breakPoint
 	display:none;
 }
 
-.tablemate .testColumnMapping
+.tablemate .testColumnMapping, 
+.tablemate .testAdvCrossTabulation
 {
 	float:left;
 	width:100%;
