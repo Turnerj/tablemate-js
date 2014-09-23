@@ -18,12 +18,12 @@ When the table can not get any smaller, Tablemate uses the information from the 
 
 Currently, Tablemate supports:
 
-* Cross Tabulation
+* Cross Tabulation / Advanced Cross Tabulation
 * Heading/Data Pairs
 
 Planned:
 
-* Advanced Cross Tabulation (refer to Issue #1)
+* Support for more common table layouts (eg. just headings across the top, just headings down the left-most column)
 
 
 ## Extendability
