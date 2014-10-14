@@ -14,10 +14,12 @@
 	function onEvent(Event, Func)
 	{
 		$($.tablemate.analysis).on(Event, Func);
+		return $.tablemate.analysis;
 	}
 	function triggerEvent(Event, Data)
 	{
 		$($.tablemate.analysis).triggerHandler(Event, Data);
+		return $.tablemate.analysis;
 	}
 	
 	function analyseTable(Table, Options)
