@@ -77,10 +77,10 @@
 			});
 		},
 		
-		testAdvCrossTabulation: function(Data)
+		testCrossTabulation: function(Data)
 		{
 			//This is a purely visual test without any automated testing.
-			//The idea is to check that the colours correspond to advanced
+			//The idea is to check that the colours correspond to 
 			//cross-tabulation of the data
 			
 			var analysis = $(this).data('tablemate').analysis;
@@ -100,7 +100,7 @@
 					
 					$.each(columns, function(ColumnIndex, Column)
 					{
-						var $testBlock = $('<div class="testAdvCrossTabulation" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + (i + 1) + '</div>');
+						var $testBlock = $('<div class="testCrossTabulation" data-index="' + colourIndex + '" style="background:'+colours[colourIndex]+';">' + (i + 1) + '</div>');
 						$(Column.cell).append($testBlock);
 					});
 					

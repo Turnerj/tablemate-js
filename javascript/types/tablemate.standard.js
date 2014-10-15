@@ -4,6 +4,8 @@
 	var analysis = $.tablemate.analysis;
 	var rendering = $.tablemate.rendering;
 	
+	//TableResult.type = 'Standard'
+	
 	/*analysis.on('analyseTable.start', function(e, TableResult)
 	{
 		TableResult.isHeadingDataPair = true;

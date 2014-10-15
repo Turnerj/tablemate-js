@@ -29,7 +29,8 @@
 		var $table = $(Table);
 		var result = {
 			rows: [],
-			numberOfColumns: 0
+			numberOfColumns: 0,
+			detectedAs: []
 		};
 		
 		//Analyse Table Width

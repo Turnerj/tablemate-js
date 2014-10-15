@@ -23,37 +23,46 @@
 			TableResult.isHeadingDataPair = false;
 		}
 	});
-	
-	
-	
-	rendering.add('headingDataPair', function($Table, TableAnalysis)
+	analysis.on('analyseTable.end', function(e, TableResult, Options)
 	{
-		if (TableAnalysis.isHeadingDataPair)
+		if (TableResult.isHeadingDataPair)
 		{
-			var $mate = $(this);
-			$mate.addClass('headingDataPair');
-			
-			var $block = $('<div class="block"></div>');
-			
-			//TODO: Possibly need to take into account rowspan on the columns, like I do on the cross tabulated data
-			for (var i = 0, l = TableAnalysis.rows.length; i < l; i++)
+			TableResult.detectedAs.push('headingDataPair');
+		}
+	});
+	
+	
+	
+	rendering.add('headingDataPair', {
+		perform: function($Table, TableAnalysis)
+		{
+			if (TableAnalysis.isHeadingDataPair)
 			{
-				var rowData = TableAnalysis.rows[i];
+				var $mate = $(this);
+				$mate.addClass('headingDataPair');
 				
-				if (rowData.columns[0].isEmpty || rowData.columns[1].isEmpty)
-					continue;
+				var $block = $('<div class="block"></div>');
 				
-				var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
+				//TODO: Possibly need to take into account rowspan on the columns, like I do on the cross tabulated data
+				for (var i = 0, l = TableAnalysis.rows.length; i < l; i++)
+				{
+					var rowData = TableAnalysis.rows[i];
+					
+					if (rowData.columns[0].isEmpty || rowData.columns[1].isEmpty)
+						continue;
+					
+					var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
+					
+					$column.find('.title').text(rowData.columns[0].title);
+					$column.find('.data').html(rowData.columns[1].data);
+					
+					$block.append($column);
+				}
 				
-				$column.find('.title').text(rowData.columns[0].title);
-				$column.find('.data').html(rowData.columns[1].data);
+				$mate.append($block);
 				
-				$block.append($column);
+				return true;
 			}
-			
-			$mate.append($block);
-			
-			return true;
 		}
 	});
 	

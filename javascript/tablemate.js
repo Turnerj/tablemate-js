@@ -5,9 +5,7 @@
 			autoInitialise: true,
 			autoInitialiseSelector: 'table.tablemate',
 			
-			analyse: {
-				detectCrossTabulation: true
-			},
+			analyse: {},
 			
 			allowResponsiveTableWidth: true,
 			autoBreakOnBodyOverflow: true,
@@ -16,6 +14,16 @@
 				width: 480
 			},
 			resizeTimeout: 100
+		},
+		debug: true,
+		log: function()
+		{
+			if (this.debug && console && typeof console.log == 'function')
+			{
+				var args = Array.prototype.slice.call(arguments);
+				args.unshift('[Tablemate]');
+				console.log.apply(console, args);
+			}
 		}
 	};
 	
@@ -56,6 +64,8 @@
 				breakTimeout = setTimeout(resizeCallback, data.options.resizeTimeout);
 			});
 			resizeCallback();
+			
+			$.tablemate.log('Table Initialised', table);
 		});
 	}
 	
@@ -104,7 +114,7 @@
 			{
 				Data.breakWidth = currentWidth;
 				
-				$.tablemate.rendering.enableBreak($this);
+				$.tablemate.rendering.enableBreak($this, Data.options);
 				$this.addClass(Data.options.breakPoint.activeClass);
 				
 				Data.isBreakPointActive = true;

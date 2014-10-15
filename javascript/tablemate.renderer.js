@@ -2,37 +2,44 @@
 {
 	$.tablemate.rendering = {
 		renderers: {},
-		add: function(Name, Callback)
+		add: function(Name, Options)
 		{
-			$.tablemate.rendering.renderers[Name] = Callback;
+			$.tablemate.rendering.renderers[Name] = Options;
 		},
-		enableBreak: function($Table)
+		enableBreak: function($Table, Options)
 		{
-			var data = $Table.data('tablemate');
-			var $mate = $('<div></div>');
-			
-			$mate.addClass('tablemate');
-			
-			var renderers = $.tablemate.rendering.renderers;
 			var hasRendered = false;
+			var data = $Table.data('tablemate');
+			var detectedAs = data.analysis.detectedAs;
+			var $mate =  $('<div></div>').addClass('tablemate');
 			
-			for (var name in renderers)
+			for (var i = 0, l = detectedAs.length; i < l; i++)
 			{
-				var renderer = renderers[name];
-				if (typeof renderer == 'function')
+				var renderer = this.renderers[detectedAs[i]];
+				
+				//Allow the renderer to run an additional check before committing
+				//to being used for the table.
+				if (
+					typeof renderer.check == 'function' && 
+					renderer.check.call($Table, data.analysis) === false
+				)
 				{
-					var result = renderer.call($mate, $Table, data.analysis);
-					if (result === true)
-					{
-						hasRendered = true;
-						break;
-					}
+					continue;
+				}
+				
+				if (typeof renderer.perform == 'function')
+				{
+					renderer.perform.call($mate, $Table, data.analysis);		
+					$Table.after($mate);
+					hasRendered = true;
+					$.tablemate.log('Break Rendered', '(Detected As: ' + detectedAs[i] + ')', $Table[0]);
+					break;
 				}
 			}
 			
-			if (hasRendered)
+			if (!hasRendered)
 			{
-				$Table.after($mate);
+				$.tablemate.log('No Renderer Found', $Table[0]);
 			}
 			
 			return hasRendered;

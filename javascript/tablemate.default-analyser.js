@@ -66,14 +66,6 @@
 		{
 			RowResult.hasAnyData = true;
 		}
-		
-		//Allow row to still be full of headings if the first column doesn't have data
-		if (Options.detectCrossTabulation && CellIndex == 0 && CellData.isEmpty && !CellData.isHeading)
-		{
-			CellData.isHeading = true;
-			RowResult.hasAnyHeadings = true;
-			RowResult.isRowOfHeadings = false;
-		}
 	});
 	analysis.on('analyseTable.afterRowAnalysis', function(e, TableResult, RowResult, RowIndex, Options)
 	{
