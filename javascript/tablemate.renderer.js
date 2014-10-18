@@ -17,6 +17,11 @@
 			{
 				var renderer = this.renderers[detectedAs[i]];
 				
+				if (typeof renderer == 'undefined')
+				{
+					continue;
+				}
+				
 				//Allow the renderer to run an additional check before committing
 				//to being used for the table.
 				if (

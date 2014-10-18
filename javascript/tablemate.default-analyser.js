@@ -30,7 +30,7 @@
 			isFirstChildStrong: $cell.children().length > 0 && $cell.children().get(0).nodeName == 'STRONG'
 		}
 		
-		//Detect if the row is a heading
+		//Detect if the cell is a heading
 		if (
 			RowResult.isInsideTHead ||
 			CellData.tag == 'TH' ||

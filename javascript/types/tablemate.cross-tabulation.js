@@ -74,55 +74,50 @@
 	rendering.add('crossTabulation', {
 		perform: function($Table, TableAnalysis)
 		{
-			if (TableAnalysis.isCrossTabulated)
+			var $mate = $(this);
+			$mate.addClass('crossTabulation');
+			
+			var points = TableAnalysis.tabulationPoints, point = null, 
+				columns = null, firstRow = TableAnalysis.rows[0];;
+			for (var i = 0, l = points.length; i < l; i++)
 			{
-				var $mate = $(this);
-				$mate.addClass('crossTabulation');
+				point = points[i];
 				
-				var points = TableAnalysis.tabulationPoints, point = null, 
-					columns = null, firstRow = TableAnalysis.rows[0];;
-				for (var i = 0, l = points.length; i < l; i++)
+				for (var i2 = point.start + 1, l2 = point.end + 1; i2 < l2; i2++)
 				{
-					point = points[i];
+					var $block = $('<div class="block"><div class="title"></div></div>');
+					var hasAnyRows = false;
 					
-					for (var i2 = point.start + 1, l2 = point.end + 1; i2 < l2; i2++)
+					$block.find('.title').text(firstRow.columns[i2].title);
+					
+					for (var i3 = 1, l3 = TableAnalysis.rows.length; i3 < l3; i3++)
 					{
-						var $block = $('<div class="block"><div class="title"></div></div>');
-						var hasAnyRows = false;
+						var rowData = TableAnalysis.rows[i3];
 						
-						$block.find('.title').text(firstRow.columns[i2].title);
+						if (typeof rowData.columns[i2] == 'undefined')
+							continue;
 						
-						for (var i3 = 1, l3 = TableAnalysis.rows.length; i3 < l3; i3++)
-						{
-							var rowData = TableAnalysis.rows[i3];
-							
-							if (typeof rowData.columns[i2] == 'undefined')
-								continue;
-							
-							if (rowData.columns[i2].isEmpty)
-								continue;
-							
-							hasAnyRows = true;
-							
-							var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
-							var title = rendering.utilities.getTitleForCell(TableAnalysis.rows, i3, i2, point.start);
-							
-							$column.find('.title').text(title);
-							$column.find('.data').html(rowData.columns[i2].data);
-							
-							$block.append($column);
-							
-							i3 = (i3 + rowData.columns[i2].rowspan) - 1;
-						}
+						if (rowData.columns[i2].isEmpty)
+							continue;
 						
-						if (hasAnyRows)
-						{
-							$mate.append($block);
-						}
+						hasAnyRows = true;
+						
+						var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
+						var title = rendering.utilities.getTitleForCell(TableAnalysis.rows, i3, i2, point.start);
+						
+						$column.find('.title').text(title);
+						$column.find('.data').html(rowData.columns[i2].data);
+						
+						$block.append($column);
+						
+						i3 = (i3 + rowData.columns[i2].rowspan) - 1;
+					}
+					
+					if (hasAnyRows)
+					{
+						$mate.append($block);
 					}
 				}
-				
-				return true;
 			}
 		}
 	});
