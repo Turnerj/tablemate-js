@@ -24,7 +24,9 @@
 	
 	function analyseTable(Table, Options)
 	{
+		$.tablemate.profileStart();
 		configureCellMapping(Table);
+		$.tablemate.profileStop();
 		
 		var $table = $(Table);
 		var result = {
@@ -33,6 +35,7 @@
 			detectedAs: []
 		};
 		
+		//TODO: Possibly move this out into the default-analyser.js file
 		//Analyse Table Width
 		var tmpWidth = $table.css('width');
 		if (tmpWidth.indexOf('%') != -1)
@@ -77,7 +80,7 @@
 			numberOfColumns: 0
 		};
 		
-		var $cells = $($row.data('cells'));
+		var $cells = $($row.data().cells);
 		result.numberOfColumns = $cells.length;
 		
 		triggerEvent('analyseRow.start', [ result, Options ]);
@@ -111,10 +114,10 @@
 			if (RowIndex == 0)
 			{
 				var tmpCount = 0;
-				$(this.cells).each(function()
+				for (var i = 0, l = this.cells.length; i < l; i++)
 				{
-					tmpCount += this.colSpan;
-				});
+					tmpCount += this.cells[i].colSpan;
+				}
 				columnCount = tmpCount;
 			}
 			
@@ -130,7 +133,7 @@
 			$cells.each(function(ColIndex)
 			{
 				var $cell = $(this), cellRows = [];
-				var cells = $row.data('cells'), trueIndex = 0;
+				var cells = $row.data().cells, trueIndex = 0;
 				
 				//Insert current cell into map
 				for (var i = 0, l = cells.length; i < l; i++)
@@ -147,7 +150,6 @@
 					}
 				}
 				
-				$row.data('cells', cells);
 				cellRows.push($row[0]);
 				
 				//Insert current cell into map for additional rows it spans to
@@ -156,7 +158,7 @@
 					for (var i = RowIndex + 1, l = RowIndex + this.rowSpan; i < l; i++)
 					{
 						var $tmpRow = $rows.eq(i);
-						var cells = $tmpRow.data('cells');
+						var cells = $tmpRow.data().cells;
 						
 						cellRows.push($tmpRow[0]);
 						
@@ -165,7 +167,6 @@
 						{
 							cells[trueIndex + i2] = this;
 						}
-						$tmpRow.data('cells', cells);
 					}
 				}
 				
