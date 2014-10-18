@@ -4,6 +4,40 @@
 	var analysis = $.tablemate.analysis;
 	var rendering = $.tablemate.rendering;
 	
+	analysis.on('analyseTable.end', function(e, TableResult, Options)
+	{
+		var basicDataTopHeadings = true, basicDataSideHeadings = true;
+		for (var i = 0, l = TableResult.rows.length; i < l; i++)
+		{
+			var row = TableResult.rows[i];
+			if ((i == 0 && !row.isRowOfHeadings) || (i > 0 && row.hasAnyHeadings))
+			{
+				basicDataTopHeadings = false;
+			}
+			
+			for (var i2 = 0, l2 = row.columns.length; i2 < l2; i2++)
+			{
+				var column = row.columns[i2];
+				if ((i2 == 0 && !column.isHeading) || (i2 > 0 && column.isHeading))
+				{
+					basicDataSideHeadings = false;
+					break;
+				}
+			}
+		}
+		
+		if (basicDataTopHeadings)
+		{
+			TableResult.detectedAs.push('basicDataTopHeadings');
+		}
+		
+		if (basicDataSideHeadings)
+		{
+			TableResult.detectedAs.push('basicDataSideHeadings');
+		}
+	});
+	
+	
 	//TableResult.type = 'Standard'
 	
 	/*analysis.on('analyseTable.start', function(e, TableResult)
