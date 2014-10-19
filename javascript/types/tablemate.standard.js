@@ -37,60 +37,79 @@
 		}
 	});
 	
-	
-	//TableResult.type = 'Standard'
-	
-	/*analysis.on('analyseTable.start', function(e, TableResult)
-	{
-		TableResult.isHeadingDataPair = true;
-	});
-	analysis.on('analyseRow.end', function(e, RowResult)
-	{
-		//Check if the row is a heading/data pair
-		if (RowResult.numberOfColumns == 2 && RowResult.columns[0].isHeading && !RowResult.columns[1].isHeading)
-		{
-			RowResult.isHeadingDataPair = true;
-		}
-	});
-	analysis.on('analyseTable.afterRowAnalysis', function(e, TableResult, RowResult, RowIndex, Options)
-	{
-		if (!RowResult.isHeadingDataPair)
-		{
-			TableResult.isHeadingDataPair = false;
-		}
-	});
-	
-	
-	
-	rendering.add('headingDataPair', function($Table, TableAnalysis)
-	{
-		if (TableAnalysis.isHeadingDataPair)
+	rendering.add('basicDataTopHeadings', {
+		perform: function($Table, TableAnalysis)
 		{
 			var $mate = $(this);
-			$mate.addClass('headingDataPair');
+			$mate.addClass('basicDataTopHeadings');
 			
-			var $block = $('<div class="block"></div>');
-			
-			//TODO: Possibly need to take into account rowspan on the columns, like I do on the cross tabulated data
-			for (var i = 0, l = TableAnalysis.rows.length; i < l; i++)
-			{
-				var rowData = TableAnalysis.rows[i];
-				
-				if (rowData.columns[0].isEmpty || rowData.columns[1].isEmpty)
+			var firstRowColumns = TableAnalysis.rows[0].columns;
+			for (var i = 0, l = firstRowColumns.length; i < l; i++)
+			{	
+				if (firstRowColumns[i].isEmpty)
+				{
 					continue;
+				}
+						
+				var $block = $('<div class="block"><div class="title"></div></div>');
+				$block.find('.title').text(firstRowColumns[i].title);
 				
-				var $column = $('<div class="column"><div class="title"></div><div class="data"></div></div>');
+				for (var i2 = 1, l2 = TableAnalysis.rows.length; i2 < l2; i2++)
+				{
+					var column = TableAnalysis.rows[i2].columns[i];
+					if (column.isEmpty)
+					{
+						continue;
+					}				
+					
+					var $column = $('<div class="column"><div class="data"></div></div>');
 				
-				$column.find('.title').text(rowData.columns[0].title);
-				$column.find('.data').html(rowData.columns[1].data);
+					$column.find('.data').html(column.data);
 				
-				$block.append($column);
+					$block.append($column);
+				}
+				
+				$mate.append($block);
 			}
-			
-			$mate.append($block);
-			
-			return true;
 		}
-	});*/
+	});
+	
+	rendering.add('basicDataSideHeadings', {
+		perform: function($Table, TableAnalysis)
+		{
+			var $mate = $(this);
+			$mate.addClass('basicDataSideHeadings');
+			
+			var firstRowColumns = TableAnalysis.rows[0].columns;
+			for (var i = 0, l = TableAnalysis.rows.length; i < l; i++)
+			{	
+				var columns = TableAnalysis.rows[i].columns;
+				if (columns[0].isEmpty)
+				{
+					continue;
+				}
+						
+				var $block = $('<div class="block"><div class="title"></div></div>');
+				$block.find('.title').text(columns[0].title);
+				
+				for (var i2 = 1, l2 = columns.length; i2 < l2; i2++)
+				{
+					var column = columns[i2];
+					if (column.isEmpty)
+					{
+						continue;
+					}				
+					
+					var $column = $('<div class="column"><div class="data"></div></div>');
+				
+					$column.find('.data').html(column.data);
+				
+					$block.append($column);
+				}
+				
+				$mate.append($block);
+			}
+		}
+	});
 	
 })(jQuery);
