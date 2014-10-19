@@ -9,7 +9,7 @@
 		enableBreak: function($Table, Options)
 		{
 			var hasRendered = false;
-			var data = $Table.data('tablemate');
+			var data = $Table.data().tablemate;
 			var detectedAs = data.analysis.detectedAs;
 			var $mate =  $('<div></div>').addClass('tablemate');
 			
