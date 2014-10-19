@@ -44,8 +44,6 @@
 	
 	$.fn.tablemate = function(Options)
 	{
-		//$.tablemate.profileStart();
-		
 		var result = this.each(function()
 		{
 			var table = this, 
@@ -78,12 +76,10 @@
 				clearTimeout(breakTimeout);
 				breakTimeout = setTimeout(resizeCallback, data.options.resizeTimeout);
 			});
-			resizeCallback();
 			
 			$.tablemate.log('Table Initialised', table);
+			resizeCallback();
 		});
-		
-		//$.tablemate.profileStop();
 		
 		return result;
 	}

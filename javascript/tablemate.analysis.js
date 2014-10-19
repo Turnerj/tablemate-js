@@ -24,9 +24,7 @@
 	
 	function analyseTable(Table, Options)
 	{
-		$.tablemate.profileStart();
 		configureCellMapping(Table);
-		$.tablemate.profileStop();
 		
 		var $table = $(Table);
 		var result = {
@@ -128,8 +126,7 @@
 		}).each(function(RowIndex)
 		{
 			//Build map of cells and rows
-			var $row = $(this);
-			$cells = $(this.cells);
+			var $row = $(this), $cells = $(this.cells);
 			$cells.each(function(ColIndex)
 			{
 				var $cell = $(this), cellRows = [];
