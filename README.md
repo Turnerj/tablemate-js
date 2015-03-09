@@ -29,3 +29,8 @@ Planned:
 ## Extendability
 
 Tablemate works in such a way that you can add new analysis methods and renderers. The API is not stable enough for documentation yet however it will come soon!
+
+
+## License
+
+This work is licensed under [Creative Commons Attribute 4.0 International](http://creativecommons.org/licenses/by/4.0/) allowing you to share and adapt for any purpose (even commercially) as long as appropriate attribution is given.

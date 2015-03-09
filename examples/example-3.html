@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tablemate.js - Responsive Tables - Example 3</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/example.css" />
+	
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+	<script type="text/javascript" src="javascript/example.js"></script>
+</head>
+<body>
+	<h2>Cross-Tabulation</h2>
+	
+	1990s Movies
+	<table class="tablemate">
+		<thead>
+			<tr>
+				<td></td>
+				<td>Cinema 1</td>
+				<td>Cinema 2</td>
+				<td>Cinema 3</td>
+				<td>Cinema 4</td>
+				<td>Cinema 5</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>1:00pm</th>
+				<td rowspan="2">Teenage Mutant Ninja Turtles</td>
+				<td></td>
+				<td rowspan="2">The Godfather: Part III</td>
+				<td colspan="2">Back to the Future Part III</td>
+			</tr>
+			<tr>
+				<th>2:00pm</th>
+				<td rowspan="2">Total Recall</td>
+				<td>Die Hard 2</td>
+				<td rowspan="2">Edward Scissorhands</td>
+			</tr>
+			<tr>
+				<th>3:00pm</th>
+				<td>Ghost</td>
+				<td>Goodfellas</td>
+				<td rowspan="2">Home Alone</td>
+			</tr>
+			<tr>
+				<th>4:00pm</th>
+				<td>Pretty Woman</td>
+				<td>Dances with Wolves</td>
+				<td>Gremlines 2: The New Batch</td>
+				<td>The Hunt for Red October</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

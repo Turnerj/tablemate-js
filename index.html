@@ -2,140 +2,54 @@
 <html>
 <head>
 	<title>Tablemate.js - Responsive Tables</title>
-	<link rel="stylesheet" type="text/css" href="css/typography.css" />
-	
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
 	
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
-	
-	<link rel="stylesheet" type="text/css" href="javascript/tablemate.css" />
-	
-	<script type="text/javascript" src="javascript/tablemate.js"></script>
-	<script type="text/javascript" src="javascript/tablemate.analysis.js"></script>
-	<script type="text/javascript" src="javascript/tablemate.default-analyser.js"></script>
-	<script type="text/javascript" src="javascript/tablemate.parsers.js"></script>
-	<script type="text/javascript" src="javascript/tablemate.renderer.js"></script>
-	<script type="text/javascript" src="javascript/tablemate.tests.js"></script>
-	
-	<script type="text/javascript" src="javascript/types/tablemate.standard.js"></script>
-	<script type="text/javascript" src="javascript/types/tablemate.heading-data-pair.js"></script>
-	<script type="text/javascript" src="javascript/types/tablemate.cross-tabulation.js"></script>
-	
+	<script type="text/javascript" src="javascript/demo.js"></script>
 </head>
-<body class="typeography">
-	<h1>Tablemate.js</h1>
-	<div class="tagline">Allow any old table to work on a mobile device!</div>
-	<h2>How does it work?</h2>
-	<p>
-		At the core of Tablemate is an analysis system which iterates over every cell in the table.
-		The default analyser picks up basic things like the type of cell (<em>TD</em> or <em>TH</em>), whether the cell is nested inside a <em>THEAD</em> and some basic styling rules.
-	</p>
-	<div class="example">
-		<h2>Basic Tables</h2>
-		
-		<h3>Headings down the side</h3>
-		<table class="tablemate">
-			<tbody>
-				<tr>
-					<th>1:00pm</th>
-					<td>Teenage Mutant Ninja Turtles</td>
-				</tr>
-				<tr>
-					<th>2:00pm</th>
-					<td>Total Recall</td>
-				</tr>
-				<tr>
-					<th>3:00pm</th>
-					<td>Godfellas</td>
-				</tr>
-				<tr>
-					<th>4:00pm</th>
-					<td>The Hunt for Red October</td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<h3>Headings across the top</h3>
-		<table class="tablemate">
-			<thead>
-				<tr>
-					<td>Name</td>
-					<td>Cinema</td>
-					<td>Release Date</td>
-					<td>IMDb Rating</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Teenage Mutant Ninja Turtles</td>
-					<td>Cinema 1</td>
-					<td>March 30, 1990</td>
-					<td>6.7</td>
-				</tr>
-				<tr>
-					<td>The Godfather: Part III</td>
-					<td>Cinema 1</td>
-					<td>December 25, 1990</td>
-					<td>7.6</td>
-				</tr>
-				<tr>
-					<td>Back to the Future Part III</td>
-					<td>Cinema 1</td>
-					<td>May 25, 1990</td>
-					<td>7.4</td>
-				</tr>
-				<tr>
-					<td>Total Recall</td>
-					<td>Cinema 2</td>
-					<td>June 1, 1990</td>
-					<td>7.5</td>
-				</tr>
-			</tbody>
-		</table>
+<body>
+	<div class="inner">
+		<h1>Tablemate.js</h1>
+		<div class="tagline">Allow any old table to work on a mobile device!</div>
+		<h2>How does it work?</h2>
+		<p>
+			At the core of Tablemate is an analysis system which iterates over every cell in the table.
+			The default analyser picks up basic things like the type of cell (<em>TD</em> or <em>TH</em>), whether the cell is nested inside a <em>THEAD</em> and some basic styling rules.
+		</p>
 	</div>
-	<div class="example">
-		<h2>Cross-Tabulation</h2>
-		
-		1990s Movies
-		<table class="tablemate">
-			<thead>
-				<tr>
-					<td></td>
-					<td>Cinema 1</td>
-					<td>Cinema 2</td>
-					<td>Cinema 3</td>
-					<td>Cinema 4</td>
-					<td>Cinema 5</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>1:00pm</th>
-					<td rowspan="2">Teenage Mutant Ninja Turtles</td>
-					<td></td>
-					<td rowspan="2">The Godfather: Part III</td>
-					<td colspan="2">Back to the Future Part III</td>
-				</tr>
-				<tr>
-					<th>2:00pm</th>
-					<td rowspan="2">Total Recall</td>
-					<td>Die Hard 2</td>
-					<td rowspan="2">Edward Scissorhands</td>
-				</tr>
-				<tr>
-					<th>3:00pm</th>
-					<td>Ghost</td>
-					<td>Goodfellas</td>
-					<td rowspan="2">Home Alone</td>
-				</tr>
-				<tr>
-					<th>4:00pm</th>
-					<td>Pretty Woman</td>
-					<td>Dances with Wolves</td>
-					<td>Gremlines 2: The New Batch</td>
-					<td>The Hunt for Red October</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="demo">
+		<div class="inner">
+			<h2>Demo</h2>
+			<div class="exampleSelect">
+				<select id="ExampleSelect">
+					<option value="example-1">Example 1 - Headings down the side</option>
+					<option value="example-2">Example 2 - Headings across the top</option>
+					<option value="example-3">Example 3 - Cross-Tabulation</option>
+				</select>
+				<select id="SizeSelect">
+					<option value="desktop">Desktop</option>
+					<option value="tablet">Tablet</option>
+					<option value="mobile">Mobile</option>
+				</select>
+			</div>
+			<div class="tablemateToggle">
+				Tablemate is
+				<div class="options enabled">
+					<span>Enabled</span>
+					<span>Disabled</span>
+					<button class="switch"></button>
+				</div>
+			</div>
+		</div>
+		<div class="frameContainer" class="desktop">
+			<iframe id="DemoFrame" src="examples/example-1.html"></iframe>
+		</div>
+	</div>
+	<div class="inner">
+		<h2>License</h2>
+		<p>
+			This work is licensed under Creative Commons Attribute 4.0 International allowing you to share and adapt for any purpose (even commercially) as long as appropriate attribution is given.
+		</p>
 	</div>
 </body>
 </html>

@@ -1,0 +1,167 @@
+body
+{
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#232323;
+    color:#FFFFFF;
+}
+h1, h2, h3, h4, h5, h6
+{
+    font-family: Arial, Helvetica, sans serif;
+    font-weight: normal;
+    color: #FFFFFF;
+    text-shadow: 0.5px 0.5px 0.5px #000000;
+}
+p
+{
+    margin: 0 0 17px 0;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+a
+{
+	outline: 0;
+    text-decoration:none;
+    border-bottom:1px dotted #9D9D9D;
+    color:#232323;
+    -o-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+a:hover, a:active
+{
+	text-decoration:none;
+	color:#255B78;
+	border-bottom:1px dotted transparent;
+}
+
+.inner
+{
+	margin:0 auto;
+	max-width:1024px;
+}
+h1
+{
+	font-size:60px;
+	text-align:center;
+	margin-bottom:5px;
+}
+.tagline
+{
+	text-align:center;
+	font-style:italic;
+}
+h2
+{
+	font-size:35px;
+	margin-bottom:10px;
+}
+
+.demo .exampleSelect
+{
+	display:inline;
+}
+.demo .tablemateToggle
+{
+	display:inline;
+	position:relative;
+	right:0px;
+}
+.demo .tablemateToggle
+{
+	float:right;
+}
+.demo .tablemateToggle .options
+{
+	border:4px solid #000;
+	border-radius:12px;
+	padding:5px 10px;
+	position:relative;
+	display:inline;
+	transition:background 0.4s ease;
+}
+.demo .tablemateToggle .options.enabled
+{
+	background:#02BC00;
+}
+.demo .tablemateToggle .options.enabled .switch
+{
+	right:0px;
+}
+.demo .tablemateToggle .options.disabled
+{
+	background:#BB0808;
+}
+.demo .tablemateToggle .options.disabled .switch
+{
+	left:0px;
+}
+
+.demo .tablemateToggle .options span
+{
+	text-shadow:0 1px 5px #000;
+}
+.demo .tablemateToggle .options span:first-child
+{
+	margin-right:10px;
+}
+.demo .tablemateToggle .switch
+{
+	position:absolute;
+	padding:0px;
+	width:65px;
+	border:1px solid #C8C8C8;
+	background:#C8C8C8;
+	height:25px;
+	top:0px;
+	border-radius:9px;
+	cursor:pointer;
+	transition:all 0.4s ease;
+}
+.demo .tablemateToggle .switch:hover,
+.demo .tablemateToggle .switch:focus
+{
+	background:#FFFFFF;
+	border-color:#FFFFFF;
+}
+
+.demo .frameContainer
+{
+	margin:25px auto;
+	box-sizing:border-box;
+	background:#FFFFFF;
+	box-shadow:5px 5px 0 0 #141414;
+}
+
+#DemoFrame
+{
+	display:block;
+	border:none;
+	width:100%;
+	height:100%;
+}
+.demo .frameContainer.desktop
+{
+	max-width:1000px;
+	height:580px;
+	border:15px solid #000000;
+	border-radius:8px;
+}
+.demo .frameContainer.tablet
+{
+	max-width:550px;
+	height:750px;
+	border:30px solid #000000;
+	border-radius:30px;
+}
+.demo .frameContainer.mobile
+{
+	max-width:320px;
+	height:480px;
+	border:20px solid #000000;
+	border-top-width:30px;
+	border-bottom-width:30px;
+	border-radius:30px;
+}
