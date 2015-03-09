@@ -14,6 +14,8 @@ When the table can no longer fit within it's parent element, Tablemate starts to
 
 When the table can not get any smaller, Tablemate uses the information from the analysis to work out the best renderer for displaying the data and executes it. The result is a mobile-friendly structure while maintaining the data as presented in the table.
 
+[View Demo](http://turnerj.github.io/tablemate-js/)
+
 ## Table Support
 
 Currently, Tablemate supports:
